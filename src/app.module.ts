@@ -10,7 +10,7 @@ import { AppService } from './app.service';
     // zeby cala aplikacja mogla korzystać z graphqla, musimy dodać:
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      // miejsce w którym będzie się generowała schema
+      // miejsce w którym będzie się generowała schem
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
   ],
