@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 type Coffee {
-  id: Float!
+  id: ID!
   name: String!
   brand: String!
   flavors: [String!]!
@@ -11,4 +11,15 @@ type Coffee {
 
 type Query {
   coffees: [Coffee!]!
+  coffee(id: ID!): Coffee!
+}
+
+type Mutation {
+  createCoffee(createCoffeeInput: CreateCoffeeInput!): Coffee!
+}
+
+input CreateCoffeeInput {
+  name: String!
+  brand: String!
+  flavors: [String!]!
 }

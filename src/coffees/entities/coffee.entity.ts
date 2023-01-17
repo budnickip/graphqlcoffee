@@ -1,14 +1,22 @@
-import { ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+//kazda klasa z decoratorem entity reprezentuje naszą tabalę w SQLU, tabela w sqlu będzie
+// taka sama jak nazwa naszej klasy z małych liter, tutaj będzie coffee
+@Entity()
 // ObjectType, bez tego nie moglibyśmy zwrócić go w resolverze
 @ObjectType()
 export class Coffee {
-  // bez graphql cli pluginu, musielibyśmy definiować tutaj typ
-  // kazdej kolumny za pomoca dekoratorow Field,
-  // tak jak robilismy to w rest api
+  @PrimaryGeneratedColumn() // columna w tabeli
+  @Field((type) => ID) // ale czasami jeśli to nie jest defaultowy typ, to musimy go zadeklarować
   id: number;
+
+  @Column()
   name: string;
+
+  @Column()
   brand: string;
-  // @Field(() => [String]) niby to musialoby byc bez pluginy
+  //tylko tymczasowo json
+  @Column({ type: 'json' }) // z tym typeorm wie, ze ma trzymac nasza tabele jako json
   flavors: string[];
 }
