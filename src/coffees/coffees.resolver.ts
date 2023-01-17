@@ -2,17 +2,18 @@ import { ParseIntPipe } from '@nestjs/common';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeInput } from './dto/create-coffee.input';
+import { UpdateCoffeeInput } from './dto/update-coffee.input';
 import { Coffee } from './entities/coffee.entity';
 
 @Resolver()
 export class CoffeesResolver {
   // nest zajmuje się dependency injection za nas
   // musimy tylko przekazać odpowiedni typ do naszego konstruktora
-  constructor(private readonly coffesService: CoffeesService) {}
+  constructor(private readonly coffeesService: CoffeesService) {}
   // () => [Coffee] - coś co ma zwrócić to query
   @Query(() => [Coffee], { name: 'coffees' })
   async findAll() {
-    return this.coffesService.findAll();
+    return this.coffeesService.findAll();
   }
 
   @Query(() => Coffee, { name: 'coffee' })
@@ -22,7 +23,7 @@ export class CoffeesResolver {
   // przekonwertuje go nam na number za nas
   // tutaj trzeba podawać nullable jesli takie ma byc, nawet jeśli mamy włączony plugin
   async findOne(@Args('id', { type: () => ID }, ParseIntPipe) id: number) {
-    return this.coffesService.findOne(id);
+    return this.coffeesService.findOne(id);
   }
 
   // zeby byc type safety, utworzmy createCoffeeInput
@@ -30,6 +31,23 @@ export class CoffeesResolver {
   async create(
     @Args('createCoffeeInput') createCoffeeInput: CreateCoffeeInput,
   ) {
-    return this.coffesService.create(createCoffeeInput);
+    return this.coffeesService.create(createCoffeeInput);
+  }
+
+  //update bierze dwa argumenty, jedno to id której kawy chcemy zupdateować
+  // drugie to obiekt z polami do aktualizacji
+  @Mutation(() => Coffee, { name: 'updateCoffee' })
+  async update(
+    @Args('id', ParseIntPipe) id: number,
+    @Args('updateCoffeeInput') updateCoffeeInput: UpdateCoffeeInput,
+  ) {
+    return this.coffeesService.update(id, updateCoffeeInput);
+  }
+
+  @Mutation(() => Coffee, { name: 'removeCoffee' })
+  async remove(
+    @Args('id', ParseIntPipe) id: number,
+  ) {
+    return this.coffeesService.remove(id);
   }
 }
