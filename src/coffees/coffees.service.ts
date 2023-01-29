@@ -8,7 +8,6 @@ import { Coffee } from './entities/coffee.entity';
 
 @Injectable()
 export class CoffeesService {
-  // inject the automatically generated repository into CoffesService using
   // mozemy teraz wstrzyknąć automatycznie generowane coffee repository dzięki InjectRepository
   constructor(
     @InjectRepository(Coffee)
@@ -36,12 +35,12 @@ export class CoffeesService {
   }
 
   async update(id: number, updateCoffeeInput: UpdateCoffeeInput) {
-      // preload tworzy nowe entity na podstawie obiektu wrzuconego do niego
-      // najpierw sprawdza czy takie entity istnieje juz bazie danych
-      // jesli tak to je zwraca i zamienia wszystkie wartosci
-      // ktore zostały przekazane w updateCoffeInput na nowe
-      // jeśli id nie zostanie znalezione w bazie danych, to funkcja ta
-      // zwroci undefined
+    // preload tworzy nowe entity na podstawie obiektu wrzuconego do niego
+    // najpierw sprawdza czy takie entity istnieje juz bazie danych
+    // jesli tak to je zwraca i zamienia wszystkie wartosci
+    // ktore zostały przekazane w updateCoffeInput na nowe
+    // jeśli id nie zostanie znalezione w bazie danych, to funkcja ta
+    // zwroci undefined
     const coffee = await this.coffeesRepository.preload({
       id,
       ...updateCoffeeInput,
@@ -52,7 +51,7 @@ export class CoffeesService {
     return this.coffeesRepository.save(coffee);
   }
 
-  async remove(id: number){
+  async remove(id: number) {
     const coffee = await this.findOne(id);
     return this.coffeesRepository.remove(coffee);
   }

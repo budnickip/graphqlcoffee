@@ -45,9 +45,7 @@ export class CoffeesResolver {
   }
 
   @Mutation(() => Coffee, { name: 'removeCoffee' })
-  async remove(
-    @Args('id', ParseIntPipe) id: number,
-  ) {
+  async remove(@Args('id', ParseIntPipe) id: number) {
     return this.coffeesService.remove(id);
   }
 }
