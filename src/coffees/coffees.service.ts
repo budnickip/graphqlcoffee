@@ -29,13 +29,12 @@ export class CoffeesService {
   }
 
   async findAll() {
-    return this.coffeesRepository.find({ relations: { flavors: true } });
+    return this.coffeesRepository.find();
   }
 
   async findOne(id: number) {
     const coffee = this.coffeesRepository.findOne({
       where: { id: id },
-      relations: { flavors: true },
     });
     if (!coffee) {
       throw new UserInputError(`Coffee #${id} does not exist`);
