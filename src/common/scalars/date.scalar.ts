@@ -20,7 +20,6 @@ export class DateScalar implements CustomScalar<number, Date> {
   }
   // ta metoda zostanie wywołana zanim response zostanie odesłany do klienta
   serialize(value: Date): number {
-    console.log(`Serialising: ${value}`);
     return value.getTime();
   }
 

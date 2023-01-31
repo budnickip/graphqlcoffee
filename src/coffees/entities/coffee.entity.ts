@@ -31,7 +31,7 @@ export class Coffee {
   // nowy dekorator, do tworzenia relacji ManyToMany
   @ManyToMany((type) => Flavor, (flavor) => flavor.coffees /* inverse side */, {
     // jak tak zrobimy, to podczas tworzenia nowej kawy, możemy podać flavors, które zostaną dodane do tabeli flavors(dzięki temu nie musimy sami wypełniać tabeli flavors jakimiś dziwnymi migracjami)
-    // cascade: true,
+    cascade: true,
   })
   // zmien tablice stringów, na tablicę Flavor
   flavors?: Flavor[];
