@@ -14,11 +14,11 @@ export class CoffeeFlavorsResolver {
     @InjectRepository(Flavor)
     private readonly flavorsRepository: Repository<Flavor>,
   ) {}
-   // 'flavors' name naszego resolvera, musimy tez przekazac co ten resolver zwroci
+  // 'flavors' name naszego resolvera, musimy tez przekazac co ten resolver zwroci
   @ResolveField('flavors', () => [Flavor])
   // @Parent -> referencja do parent obiektu w naszym field resolverze
   async getFlavorsOfCoffee(@Parent() coffee: Coffee) {
-          // Using the injected repository,
+    // Using the injected repository,
     // let’s retrieve ALL flavors that belong to a “parent coffee”.
     // queryBuilder pozwala tworzyć zapytania SQLowe w type safe sposób
     // innerJoin, zeby sie upewnic, ze zwracamy tylko smaki, ktore naleza do danej kawy

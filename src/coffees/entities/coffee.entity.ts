@@ -1,6 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
@@ -34,4 +35,8 @@ export class Coffee {
   })
   // zmien tablice stringów, na tablicę Flavor
   flavors?: Flavor[];
+
+  // default as date time string in UTS
+  @CreateDateColumn() // automatycznie doda datę jak kawa zostanie dodana do bazy
+  createdAt?: Date;
 }
