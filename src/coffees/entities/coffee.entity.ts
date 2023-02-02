@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { CoffeeType } from 'src/common/enums/coffee-type.enum';
 import {
   Column,
   CreateDateColumn,
@@ -39,4 +40,7 @@ export class Coffee {
   // default as date time string in UTS
   @CreateDateColumn() // automatycznie doda datę jak kawa zostanie dodana do bazy
   createdAt?: Date;
+
+  @Column({nullable: true})
+  type?: CoffeeType
 }
