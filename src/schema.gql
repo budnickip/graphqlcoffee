@@ -14,6 +14,12 @@ type Coffee {
   brand: String!
   flavors: [Flavor!]!
   createdAt: Date
+  type: CoffeeType
+}
+
+enum CoffeeType {
+  ARABICA
+  ROBUSTA
 }
 
 """Date custom scalar type"""
@@ -34,10 +40,12 @@ input CreateCoffeeInput {
   name: String!
   brand: String!
   flavors: [String!]!
+  type: CoffeeType!
 }
 
 input UpdateCoffeeInput {
   name: String
   brand: String
   flavors: [String!]
+  type: CoffeeType
 }
