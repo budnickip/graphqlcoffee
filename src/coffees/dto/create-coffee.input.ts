@@ -11,5 +11,5 @@ export class CreateCoffeeInput {
   brand: string;
   // @Field() <- required when CLI plugin is disabled
   flavors: string[];
-  type: CoffeeType
+  type: CoffeeType;
 }

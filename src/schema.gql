@@ -2,15 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+interface Drink {
+  name: String!
+}
+
 type Flavor {
   id: ID!
   name: String!
   coffees: [Coffee!]!
 }
 
-type Coffee {
-  id: ID!
+type Coffee implements Drink {
   name: String!
+  id: ID!
   brand: String!
   flavors: [Flavor!]!
   createdAt: Date
@@ -22,12 +26,17 @@ enum CoffeeType {
   ROBUSTA
 }
 
+type Tea implements Drink {
+  name: String!
+}
+
 """Date custom scalar type"""
 scalar Date
 
 type Query {
   coffees: [Coffee!]!
   coffee(id: ID!): Coffee!
+  drinks: [Drink!]!
 }
 
 type Mutation {

@@ -9,5 +9,7 @@ import { CoffeeFlavorsResolver } from './coffee-flavors.resolver';
 @Module({
   imports: [TypeOrmModule.forFeature([Coffee, Flavor])],
   providers: [CoffeesResolver, CoffeesService, CoffeeFlavorsResolver],
+  // only thinks in this table could be imported in other modules
+  exports: [CoffeesService],
 })
 export class CoffeesModule {}

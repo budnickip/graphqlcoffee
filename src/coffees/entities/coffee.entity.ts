@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { CoffeeType } from 'src/common/enums/coffee-type.enum';
+import { Drink } from 'src/common/interfaces/drink.interface';
 import {
   Column,
   CreateDateColumn,
@@ -14,8 +15,8 @@ import { Flavor } from './flavor.entity';
 // taka sama jak nazwa naszej klasy z małych liter, tutaj będzie coffee
 @Entity()
 // ObjectType, bez tego nie moglibyśmy zwrócić go w resolverze
-@ObjectType()
-export class Coffee {
+@ObjectType({ implements: () => Drink })
+export class Coffee implements Drink {
   @PrimaryGeneratedColumn() // columna w tabeli
   @Field((type) => ID) // ale czasami jeśli to nie jest defaultowy typ, to musimy go zadeklarować
   id: number;
@@ -41,6 +42,6 @@ export class Coffee {
   @CreateDateColumn() // automatycznie doda datę jak kawa zostanie dodana do bazy
   createdAt?: Date;
 
-  @Column({nullable: true})
-  type?: CoffeeType
+  @Column({ nullable: true })
+  type?: CoffeeType;
 }

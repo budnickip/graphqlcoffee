@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
 import { DateScalar } from './common/scalars/date.scalar';
+import { DrinkModule } from './drinks/drinks.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { DateScalar } from './common/scalars/date.scalar';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     CoffeesModule,
+    DrinkModule,
   ],
   controllers: [AppController],
   providers: [AppService, DateScalar],
