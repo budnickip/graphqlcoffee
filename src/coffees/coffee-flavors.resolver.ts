@@ -1,6 +1,7 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { FlavorsByCoffeeLoader } from './data-loader/flavors-by-coffee.loader';
 import { Coffee } from './entities/coffee.entity';
 import { Flavor } from './entities/flavor.entity';
 
@@ -9,11 +10,7 @@ import { Flavor } from './entities/flavor.entity';
 
 @Resolver(() => Coffee)
 export class CoffeeFlavorsResolver {
-  constructor(
-    // ⚙️ Inject the Flavor Repository
-    @InjectRepository(Flavor)
-    private readonly flavorsRepository: Repository<Flavor>,
-  ) {}
+  constructor(private readonly flavorsByCoffeeLoader: FlavorsByCoffeeLoader) {}
   // 'flavors' name naszego resolvera, musimy tez przekazac co ten resolver zwroci
   @ResolveField('flavors', () => [Flavor])
   // @Parent -> referencja do parent obiektu w naszym field resolverze
@@ -25,11 +22,12 @@ export class CoffeeFlavorsResolver {
     // sprawwdzamy czay coffeeId ktore przekazemy do naszego resolvera, jest takie samo
     // jak parent coffee id
     // getMany - wywoła zapytanie i zwroci wszystkie flavors
-    return this.flavorsRepository
-      .createQueryBuilder('flavor')
-      .innerJoin('flavor.coffees', 'coffees', 'coffees.id = :coffeeId', {
-        coffeeId: coffee.id,
-      })
-      .getMany();
+    // return this.flavorsRepository
+    //   .createQueryBuilder('flavor')
+    //   .innerJoin('flavor.coffees', 'coffees', 'coffees.id = :coffeeId', {
+    //     coffeeId: coffee.id,
+    //   })
+    //   .getMany();
+    return this.flavorsByCoffeeLoader.load(coffee.id);
   }
 }

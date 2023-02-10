@@ -20,6 +20,8 @@ import { DrinkModule } from './drinks/drinks.module';
       database: 'postgres',
       autoLoadEntities: true,
       synchronize: true,
+      // dzięki temu w konsoli mozemy zobaczyc jakie zapytania szly do bazy
+      // logging: ['query'],
     }),
     // zeby cala aplikacja mogla korzystać z graphqla, musimy dodać:
     GraphQLModule.forRoot<ApolloDriverConfig>({
