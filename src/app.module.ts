@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
 import { DateScalar } from './common/scalars/date.scalar';
 import { DrinkModule } from './drinks/drinks.module';
+import { PubSubModule } from './pub-sub/pub-sub.module';
 
 @Module({
   imports: [
@@ -28,9 +29,11 @@ import { DrinkModule } from './drinks/drinks.module';
       driver: ApolloDriver,
       // miejsce w którym będzie się generowała schem
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      installSubscriptionHandlers: true,
     }),
     CoffeesModule,
     DrinkModule,
+    PubSubModule,
   ],
   controllers: [AppController],
   providers: [AppService, DateScalar],

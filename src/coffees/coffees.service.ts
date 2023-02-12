@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserInputError } from 'apollo-server-express';
+import { PubSub } from 'graphql-subscriptions';
 import { Repository } from 'typeorm';
 import { CreateCoffeeInput } from './dto/create-coffee.input';
 import { UpdateCoffeeInput } from './dto/update-coffee.input';
@@ -15,6 +16,7 @@ export class CoffeesService {
     private readonly coffeesRepository: Repository<Coffee>,
     @InjectRepository(Flavor)
     private readonly flavorsRepository: Repository<Flavor>,
+    private readonly pubSub: PubSub,
   ) {}
 
   private async preloadFlavorByName(name: string): Promise<Flavor> {
@@ -59,7 +61,9 @@ export class CoffeesService {
     // const coffee = this.coffeesRepository.create(createCoffeeInput);
     // teraz wystarczy tylko zapisać nową wartość w naszym repozytorium i nasze
     // nowe entity zostanie zapisane do bazy danych
-    return this.coffeesRepository.save(coffee);
+    const newCoffeeEntity = await this.coffeesRepository.save(coffee);
+    this.pubSub.publish('coffeeAdded', { coffeeAdded: newCoffeeEntity }); // 👈 PubSub
+    return newCoffeeEntity;
   }
 
   async update(id: number, updateCoffeeInput: UpdateCoffeeInput) {

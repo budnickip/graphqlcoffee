@@ -1,5 +1,13 @@
 import { ParseIntPipe } from '@nestjs/common';
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  ID,
+  Mutation,
+  Query,
+  Resolver,
+  Subscription,
+} from '@nestjs/graphql';
+import { PubSub } from 'graphql-subscriptions';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeInput } from './dto/create-coffee.input';
 import { UpdateCoffeeInput } from './dto/update-coffee.input';
@@ -9,7 +17,10 @@ import { Coffee } from './entities/coffee.entity';
 export class CoffeesResolver {
   // nest zajmuje się dependency injection za nas
   // musimy tylko przekazać odpowiedni typ do naszego konstruktora
-  constructor(private readonly coffeesService: CoffeesService) {}
+  constructor(
+    private readonly coffeesService: CoffeesService,
+    private readonly pubSub: PubSub, // 👈 add PubSub provider
+  ) {}
   // () => [Coffee] - coś co ma zwrócić to query
   @Query(() => [Coffee], { name: 'coffees' })
   async findAll() {
@@ -47,5 +58,10 @@ export class CoffeesResolver {
   @Mutation(() => Coffee, { name: 'removeCoffee' })
   async remove(@Args('id', ParseIntPipe) id: number) {
     return this.coffeesService.remove(id);
+  }
+
+  @Subscription(() => Coffee)
+  coffeeAdded() {
+    return this.pubSub.asyncIterator('coffeeAdded');
   }
 }
