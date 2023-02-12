@@ -1,6 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { CoffeeType } from 'src/common/enums/coffee-type.enum';
 import { Drink } from 'src/common/interfaces/drink.interface';
+import { loggerMiddleware } from 'src/common/middleware/logger.middleware';
 import {
   Column,
   CreateDateColumn,
@@ -21,6 +22,11 @@ export class Coffee implements Drink {
   @Field((type) => ID) // ale czasami jeśli to nie jest defaultowy typ, to musimy go zadeklarować
   id: number;
 
+  // jesli chcielibysmy wywolac kilka middlewarow, to pamietaj ze kolejnosc ma znaczenie!
+  // Utilizing our field middleware
+  @Field({
+    middleware: [loggerMiddleware],
+  })
   @Column()
   name: string;
 
